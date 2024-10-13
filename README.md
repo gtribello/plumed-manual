@@ -10,9 +10,9 @@ __Documentation for development version__
 # Tutorials
 
 The manuals linked above are reference documents.  The best way to start learning to use PLUMED is to visit 
-our [tutorials site](www.plumed-tutorials.org).
+our [tutorials site](https://www.plumed-tutorials.org).
 
-You can also see how PLUMED has been used in a range of research projects by visiting the [PLUMED nest](www.plumed-nest.org).
+You can also see how PLUMED has been used in a range of research projects by visiting the [PLUMED nest](https://www.plumed-nest.org).
 
 # Need help?
 
