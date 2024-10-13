@@ -70,6 +70,20 @@ for mod in `ls src/*/Makefile` ;  do
 done
 echo } >> $GITHUB_WORKSPACE/_data/extradeps$version.json
 cp -pr new-manual $GITHUB_WORKSPACE/$version
+mkdir $GITHUB_WORKSPACE/automatic
+
+cat src/*/*cpp | 
+awk -v odir=$GITHUB_WORKSPACE/automatic '{
+  if($1=="//+ENDPLUMEDOC" && inside){
+     inside=0
+  } 
+  if(inside==1 && $1!="/*" && $1!="*/") print $0 > output
+  if($1=="//+PLUMEDOC"){
+     if(output!="")close(output);
+     output=odir/"$3".md
+     inside=1 
+  }
+}'
 
 hash=$(git rev-parse HEAD)
 

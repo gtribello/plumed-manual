@@ -76,7 +76,7 @@ PLUMED to include it during the configure stage by using:
 ./configure --enable-module=module-name
 ```
 
-Each module contains implementations of a number of [actions](action.md). You can find a list of all the actions implemented in in PLUMED [here](actionlist.md).
+Each module contains implementations of a number of [actions](actions.md). You can find a list of all the actions implemented in in PLUMED [here](actionlist.md).
 
 Please also note that some developers prefer not to include their codes in PLUMED.  To use functionality that has been written by these developed you can use the LOAD command. 
 
@@ -327,7 +327,7 @@ if __name__ == "__main__" :
 
    # Create the general pages
    actions = set()
-   for page in glob.glob( version + "/*.md") : processMarkdown( page, (PLUMED,), (version,), actions )
+   for page in glob.glob( version + "/*.md") : processMarkdown( page, (PLUMED,), (version.replace("-",""),), actions )
 
    # Create a page for each action
    os.mkdir( version + "/data" )
