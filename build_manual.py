@@ -314,7 +314,7 @@ if __name__ == "__main__" :
    # Create a page for each action
    os.mkdir("manual")
    os.mkdir("manual/data")
-   with open("_data/actionlist" + str(replica) + ".yml","w") as actdb :
+   with open("_data/actionlist.yml","w") as actdb :
        print("# file containing action database.",file=actdb) 
  
        for key, value in plumed_syntax.items() :
