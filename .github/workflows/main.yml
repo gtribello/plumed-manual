@@ -66,7 +66,7 @@ jobs:
 
     - name: Create tar ball
       run: |
-        tar cf manual.tar manual 
+        tar cf manual.tar manual _data 
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
