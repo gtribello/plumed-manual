@@ -49,7 +49,7 @@ def createModuleGraph( version, plumed_rootdir, plumed_syntax ) :
               if plumed_syntax[req]["module"]!=thismodule : requires[thismodule].add( plumed_syntax[req]["module"] )
    
    # And from inclusion  
-   with open("_data/extradepsmaster.json") as f :
+   with open("_data/extradeps" + version + ".json") as f :
       try:
         dependinfo = json.load(f)
       except ValueError as ve:
