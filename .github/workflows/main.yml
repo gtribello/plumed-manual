@@ -69,11 +69,11 @@ jobs:
         tar cf manual.tar manual 
 
     - name: Upload artifact
-       uses: actions/upload-artifact@v3
-       with:
-         name: manual
-         path: manual.tar
-         retention-days: 1
+      uses: actions/upload-artifact@v3
+      with:
+        name: manual
+        path: manual.tar
+        retention-days: 1
 
   # Build job
   jekyll:
