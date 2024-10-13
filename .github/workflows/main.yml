@@ -59,6 +59,22 @@ jobs:
         CXX="mpic++" .ci/install.plumed version=master repo=$PWD/plumed2.git
         ccache -s
 
+    - name: Build manual
+      run: |
+        python --version
+        python build_manual.py
+
+    - name: Create tar ball
+      run: |
+        tar cf manual.tar manual 
+
+    - name: Upload artifact
+       uses: actions/upload-artifact@v3
+       with:
+         name: manual
+         path: manual.tar
+         retention-days: 1
+
   # Build job
   jekyll:
     runs-on: ubuntu-latest
@@ -66,6 +82,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+      - name: Extract artifact
+        uses: tar xf manual/manual.tar
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
