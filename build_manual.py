@@ -59,7 +59,7 @@ def createModuleGraph( plumed_rootdir, plumed_syntax ) :
        for conn in dependinfo[key]["depends"] :
            if conn in requires.keys() : requires[key].add( conn )
 
-   of = open("manual.md", "w")
+   of = open("manual/manual.md", "w")
    ghead = """
 The PLUMED CODE
 ------------------------
@@ -312,7 +312,6 @@ if __name__ == "__main__" :
            print("  description: " + value["description"], file=gfile )
 
    # Create a page for each action
-   os.mkdir("manual")
    os.mkdir("manual/data")
    with open("_data/actionlist.yml","w") as actdb :
        print("# file containing action database.",file=actdb) 
