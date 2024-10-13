@@ -85,7 +85,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
       - name: Extract artifact
-        uses: tar xf manual/manual.tar
+        run: |
+          tar xf manual/manual.tar
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
