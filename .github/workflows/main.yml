@@ -7,6 +7,47 @@ name: CI
 on: [push, pull_request]
 
 jobs:
+  # This workflow contains a job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.8
+        cache: 'pip'
+
+    - name: Set paths
+      run: |
+        echo "$HOME/opt/bin" >> $GITHUB_PATH
+        echo "CPATH=$HOME/opt/include:$HOME/opt/libtorch/include/torch/csrc/api/include/:$HOME/opt/libtorch/include/:$HOME/opt/libtorch/include/torch:$CPATH" >> $GITHUB_ENV
+        echo "INCLUDE=$HOME/opt/include:$HOME/opt/libtorch/include/torch/csrc/api/include/:$HOME/opt/libtorch/include/:$HOME/opt/libtorch/include/torch:$INCLUDE" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/libtorch/lib:$LIBRARY_PATH" >> $GITHUB_ENV
+        echo "LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/libtorch/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+        echo "PYTHONPATH=$HOME/opt/lib/plumed/python:$PYTHONPATH" >> $GITHUB_ENV
+        # needed to avoid MPI warning
+        echo "OMPI_MCA_btl=^openib" >> $GITHUB_ENV
+
+    - name: Install software
+      run: |
+        sudo apt update
+        sudo apt install mpi-default-bin mpi-default-dev
+        sudo apt install libfftw3-dev gsl-bin libgsl0-dev libboost-serialization-dev
+        sudo apt install ccache
+        sudo apt-get update
+        pip install -r requirements.txt
+        git clone --bare https://github.com/plumed/plumed2.git
+        sudo ln -s ccache /usr/local/bin/mpic++
+        export PATH=/usr/lib/ccache:${PATH}
+        ccache -s
+        .ci/install.libtorch
+        # GB: in addition, we install master version as plumed_master
+        CXX="mpic++" .ci/install.plumed version=master repo=$PWD/plumed2.git
+        ccache -s
+
   # Build job
   jekyll:
     runs-on: ubuntu-latest
