@@ -9,6 +9,9 @@ on: [push, pull_request]
 jobs:
   # This workflow contains a job called "build"
   build:
+    strategy:
+      matrix:
+        replica: ["new-manual"]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -55,14 +58,13 @@ jobs:
         export PATH=/usr/lib/ccache:${PATH}
         ccache -s
         .ci/install.libtorch
-        # GB: in addition, we install master version as plumed_master
-        CXX="mpic++" .ci/install.plumed version=master repo=$PWD/plumed2.git
+        CXX="mpic++" .ci/install.plumed version=${{matrix.replica}} repo=$PWD/plumed2.git
         ccache -s
 
     - name: Build manual
       run: |
         python --version
-        python build_manual.py
+        python build_manual.py -v ${{matrix.replica}}
 
     - name: Create tar ball
       run: |

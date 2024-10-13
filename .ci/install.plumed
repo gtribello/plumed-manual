@@ -67,6 +67,7 @@ for mod in `ls src/*/Makefile` ;  do
     fi
 done
 echo } >> $GITHUB_WORKSPACE/_data/extradeps$version.json
+cp -pr new-manual $GITHUB_WORKSPACE/$version
 
 git checkout $version
 

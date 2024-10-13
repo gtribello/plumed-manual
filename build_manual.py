@@ -4,6 +4,7 @@ import json
 import getopt
 import requests
 import subprocess
+import glob
 import numpy as np
 from pathlib import Path
 from datetime import date 
@@ -36,7 +37,7 @@ def drawModuleNode( index, key, ntype, of ) :
     elif ntype=="default-off" : of.write("style " + str(index) + " fill:red\n")    
     else : raise Exception("don't know how to draw node of type " + ntype )
 
-def createModuleGraph( plumed_rootdir, plumed_syntax ) :
+def createModuleGraph( version, plumed_rootdir, plumed_syntax ) :
    # Get all the module dependencies
    requires = {}
    for key, value in plumed_syntax.items() :
@@ -59,7 +60,7 @@ def createModuleGraph( plumed_rootdir, plumed_syntax ) :
        for conn in dependinfo[key]["depends"] :
            if conn in requires.keys() : requires[key].add( conn )
 
-   of = open("manual/manual.md", "w")
+   of = open( version + "/manual.md", "w")
    ghead = """
 The PLUMED CODE
 ------------------------
@@ -150,9 +151,9 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
    of.write("```\n")
    of.close()
 
-def createModulePage( modname, neggs, nlessons ) :
-    with open( "manual/" + modname + ".md", "w") as f :
-         f.write("# [Module](../manual.md): " + modname + "\n\n")
+def createModulePage( version, modname, neggs, nlessons ) :
+    with open( version + "/" + modname + ".md", "w") as f :
+         f.write("# [Module](manual.md): " + modname + "\n\n")
          f.write("| Description    | Usage |\n")
          f.write("|:--------|:--------:|\n")
          f.write("| Description of module | ")
@@ -194,8 +195,8 @@ def createModulePage( modname, neggs, nlessons ) :
          f.write("});\n")
          f.write("</script>\n")
 
-def createActionPage( action, value, neggs, nlessons, actdb ) :
-    with open("manual/" + action + ".md", "w") as f : 
+def createActionPage( version, action, value, neggs, nlessons, actdb ) :
+    with open( version + "/" + action + ".md", "w") as f : 
          if "IS_SHORTCUT" in value["syntax"].keys() : f.write("# [Shortcut](shortcuts.md): " + action + "\n\n")
          else : f.write("# [Action](actions.md): " + action + "\n\n")
 
@@ -286,6 +287,19 @@ def createActionPage( action, value, neggs, nlessons, actdb ) :
     print("  module: " + value["module"], file=actdb)
 
 if __name__ == "__main__" : 
+   version, argv = "master", sys.argv[1:]
+   try:
+       opts, args = getopt.getopt(argv,"hv:",["version="])
+   except:
+      print('compile.py -v <version>')
+
+   for opt, arg in opts:
+      if opt in ['-h'] :
+         print('build_manual.py -v <version>')
+         sys.exit()
+      elif opt in ["-v", "--version"]:
+         version = arg
+
    nest_map = create_map("https://www.plumed-nest.org/summary.html")
    school_map = create_map("https://www.plumed-tutorials.org/summary.html")
    # Print the date to the data directory
@@ -311,8 +325,12 @@ if __name__ == "__main__" :
            print("- name: \"" + key + "\"", file=gfile )
            print("  description: " + value["description"], file=gfile )
 
+   # Create the general pages
+   actions = set()
+   for page in glob.glob( version + "/*.md") : processMarkdown( page, (PLUMED,), (version,), actions )
+
    # Create a page for each action
-   os.mkdir("manual/data")
+   os.mkdir( version + "/data" )
    with open("_data/actionlist.yml","w") as actdb :
        print("# file containing action database.",file=actdb) 
  
@@ -322,11 +340,7 @@ if __name__ == "__main__" :
            neggs, nlessons = 0, 0
            if key in nest_map.keys() : neggs = nest_map[key]
            if key in school_map.keys() : nlessons = school_map[key] 
-           createActionPage( key, value, neggs, nlessons, actdb ) 
-
-   # Create the general pages
-   # actions, general_pages = set(), ["specifying_atoms.md", "specifying_arguments.md", "actions.md", "shortcuts.md", "parsing.md"]
-   # for page in general_pages : processMarkdown( "manual/" + page, (PLUMED,), ("master",), actions )
+           createActionPage( version, key, value, neggs, nlessons, actdb ) 
 
    # Create a list of modules
    modules = {}
@@ -340,6 +354,6 @@ if __name__ == "__main__" :
      else : modules[value["module"]]["neggs"], modules[value["module"]]["nlessons"] = modules[value["module"]]["neggs"] + neggs, modules[value["module"]]["nlessons"] + nlessons
 
    # And create each module page
-   for module, value in modules.items() : createModulePage( module, value["neggs"], value["nlessons"] )
+   for module, value in modules.items() : createModulePage( version, module, value["neggs"], value["nlessons"] )
    # Create the graph that shows all the modules
-   createModuleGraph( plumed_rootdir, plumed_syntax )
+   createModuleGraph( version, plumed_rootdir, plumed_syntax )
