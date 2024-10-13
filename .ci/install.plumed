@@ -80,7 +80,7 @@ awk -v odir=$GITHUB_WORKSPACE/automatic '{
   if(inside==1 && $1!="/*" && $1!="*/") print $0 > output
   if($1=="//+PLUMEDOC"){
      if(output!="")close(output);
-     output=odir/"$3".md
+     output=odir"/"$3".md"
      inside=1 
   }
 }'
