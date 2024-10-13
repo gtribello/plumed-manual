@@ -70,6 +70,22 @@ echo } >> $GITHUB_WORKSPACE/_data/extradeps$version.json
 
 git checkout $version
 
+hash=$(git rev-parse HEAD)
+
+if test -f $HOME/opt/lib/$program_name/$hash
+then
+  echo "ALREADY AVAILABLE, NO NEED TO REINSTALL"
+else
+
+rm -fr $HOME/opt/lib/$program_name
+rm -fr $HOME/opt/bin/$program_name
+rm -fr $HOME/opt/include/$program_name
+rm -fr $HOME/opt/lib/lib$program_name.so*
+
 ./configure --prefix=$HOME/opt  --enable-modules=all --enable-boost_serialization --enable-fftw $suffix --enable-libtorch LDFLAGS=-Wl,-rpath,$LD_LIBRARY_PATH
 make -j 5
 make install
+
+touch $HOME/opt/lib/$program_name/$hash
+
+fi
