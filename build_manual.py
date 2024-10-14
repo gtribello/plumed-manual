@@ -9,7 +9,7 @@ import numpy as np
 from pathlib import Path
 from datetime import date 
 from bs4 import BeautifulSoup
-from PlumedToHTML import processMarkdown
+from PlumedToHTML import processMarkdown, processMarkdownString
 import networkx as nx
 
 PLUMED="plumed"
@@ -200,7 +200,9 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
          if "IS_SHORTCUT" in value["syntax"].keys() : f.write("# [Shortcut](shortcuts.md): " + action + "\n\n")
          else : f.write("# [Action](actions.md): " + action + "\n\n")
 
-         f.write("| Description    | Usage |\n")
+         f.write("| [Module](manual.md) | [" + value["module"] + "](" + value["module"]  + ".md) |\n")
+         f.write("|:--------|:--------:|\n")
+         f.write("| **Description**    | **Usage** |\n")
          f.write("|:--------|:--------:|\n") 
          f.write("| " + value["description"] + " | ")
          if nlessons>0 : 
@@ -226,7 +228,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
                for key, docs in value["syntax"]["output"].items() :
                    if docs["flag"]!="default" : onlydefault = False
                if onlydefault :
-                  f.write("This action calculates the [values](pecifying_arguments.html) in the following table.  These [values](pecifying_arguments.html) can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the [value](pecifying_arguments.html) required from the list below.\n\n")
+                  f.write("This action calculates the [values](specifying_arguments.html) in the following table.  These [values](specifying_arguments.html) can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the [value](specifying_arguments.html) required from the list below.\n\n")
                   f.write("| Name | Type | Description |\n")
                   f.write("|:-------|:-----|:-------|\n")
                   for key, docs in value["syntax"]["output"].items() :
@@ -234,7 +236,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
                       f.write("| " + key + " | " + docs["type"] + " | " + docs["description"] + " | \n") 
                   f.write("\n\n")
                else : 
-                  f.write("This action can calculate the [values](pecifying_arguments.html) in the following table when the associated keyword is included in the input for the action. These [values](pecifying_arguments.html) can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the [value](pecifying_arguments.html) required from the list below.\n\n")
+                  f.write("This action can calculate the [values](specifying_arguments.html) in the following table when the associated keyword is included in the input for the action. These [values](specifying_arguments.html) can be referenced elsewhere in the input by using this Action's label followed by a dot and the name of the [value](specifying_arguments.html) required from the list below.\n\n")
                   f.write("| Name | Type | Keyword | Description |\n")
                   f.write("|:-------|:-----|:----:|:-------|\n")
                   for key, docs in value["syntax"]["output"].items() :
@@ -263,7 +265,10 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
             f.write("\n\n")
 
          f.write("## Further details and examples \n")
-         f.write("Information for the manual from the code would go in here \n")
+         with open("automatic/" + action + ".md", "r") as iff : inp = iff.read() 
+         actions = set()
+         processMarkdownString( inp, version + "/" + action + ".md", (version,), (version.replace("-",""),), action, version, f )
+         #f.write("Information for the manual from the code would go in here \n")
          f.write("## Syntax \n")
          f.write("The following table describes the [keywords and options](parsing.md) that can be used with this action \n\n")
          f.write("| Keyword | Type | Default | Description |\n")
