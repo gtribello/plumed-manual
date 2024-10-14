@@ -265,9 +265,12 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
             f.write("\n\n")
 
          f.write("## Further details and examples \n")
-         with open("automatic/" + action + ".md", "r") as iff : inp = iff.read() 
-         actions = set()
-         processMarkdownString( inp, version + "/" + action + ".md", (PLUMED,), (version.replace("-",""),), action, version, f )
+         if value["module"]=="adjmat" : 
+             with open("automatic/" + action + ".md", "r") as iff : inp = iff.read() 
+             actions = set()
+             processMarkdownString( inp, version + "/" + action + ".md", (PLUMED,), (version.replace("-",""),), action, version, f )
+         else : 
+             f.write("Text from manual goes here \n")
          f.write("## Syntax \n")
          f.write("The following table describes the [keywords and options](parsing.md) that can be used with this action \n\n")
          f.write("| Keyword | Type | Default | Description |\n")
