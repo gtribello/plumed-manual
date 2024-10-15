@@ -266,11 +266,12 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
 
          f.write("## Further details and examples \n")
          if value["module"]=="adjmat" : 
-             print("PROCESSING FILE", action ) 
              actions = set()
              processMarkdown( "automatic/" + action + ".md", (PLUMED,), (version.replace("-",""),), actions )
              with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
              f.write( inp.replace(value["description"],"") )
+             # This moves all the PLUMED output files 
+             for file in glob.glob("automatic/" + action + ".md_*" ) : os.rename(file, file.replace("automatic", version) )
          else : 
              f.write("Text from manual goes here \n")
          f.write("## Syntax \n")
