@@ -266,7 +266,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
 
          f.write("## Further details and examples \n")
          if value["module"]=="adjmat" : 
-             print("PROCESSING FILE", action, inp ) 
+             print("PROCESSING FILE", action ) 
              actions = set()
              processMarkdown( version + "/" + action + ".md", (PLUMED,), (version.replace("-",""),), action )
              with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
