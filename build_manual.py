@@ -9,7 +9,7 @@ import numpy as np
 from pathlib import Path
 from datetime import date 
 from bs4 import BeautifulSoup
-from PlumedToHTML import processMarkdown, processMarkdownString
+from PlumedToHTML import processMarkdown 
 import networkx as nx
 
 PLUMED="plumed"
@@ -266,10 +266,11 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
 
          f.write("## Further details and examples \n")
          if value["module"]=="adjmat" : 
-             with open("automatic/" + action + ".md", "r") as iff : inp = iff.read() 
              print("PROCESSING FILE", action, inp ) 
              actions = set()
-             processMarkdownString( inp, version + "/" + action + ".md", (PLUMED,), (version.replace("-",""),), action, version, f )
+             processMarkdown( version + "/" + action + ".md", (PLUMED,), (version.replace("-",""),), action )
+             with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
+             f.write( inp )
          else : 
              f.write("Text from manual goes here \n")
          f.write("## Syntax \n")
