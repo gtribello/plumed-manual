@@ -289,7 +289,8 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
             f.write("\n\n")
 
          f.write("## Further details and examples \n")
-         if value["module"]=="adjmat" : 
+         fixed_modules = ["adjmat", "envsim", "sprint", "clusters"]
+         if value["module"] in fixed_modules : 
              actions = set()
              processMarkdown( "automatic/" + action + ".md", (PLUMED,), (version.replace("-",""),), actions )
              with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
@@ -303,7 +304,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
          for doi in value["dois"] :
              ref, ref_url = get_reference(doi)
              f.write("- [" + ref + "](" + ref_url + ")\n")
-         f.write("## Syntax \n")
+         f.write("\n## Syntax \n")
          f.write("The following table describes the [keywords and options](parsing.md) that can be used with this action \n\n")
          f.write("| Keyword | Type | Default | Description |\n")
          f.write("|:-------|:----:|:-------:|:-----------|\n")
