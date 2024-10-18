@@ -289,7 +289,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
             f.write("\n\n")
 
          f.write("## Further details and examples \n")
-         fixed_modules = ["adjmat", "envsim", "sprint", "clusters"]
+         fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure"]
          if value["module"] in fixed_modules : 
              actions = set()
              processMarkdown( "automatic/" + action + ".md", (PLUMED,), (version.replace("-",""),), actions )
@@ -299,11 +299,12 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
              for file in glob.glob("automatic/" + action + ".md_*" ) : os.rename(file, file.replace("automatic", version) )
          else : 
              f.write("Text from manual goes here \n")
-         f.write("## References \n")
-         f.write("More information about how this action can be used is available in the following articles:\n")
-         for doi in value["dois"] :
-             ref, ref_url = get_reference(doi)
-             f.write("- [" + ref + "](" + ref_url + ")\n")
+         if len(value["dois"])>0 : 
+            f.write("## References \n")
+            f.write("More information about how this action can be used is available in the following articles:\n")
+            for doi in value["dois"] :
+                ref, ref_url = get_reference(doi)
+                f.write("- [" + ref + "](" + ref_url + ")\n")
          f.write("\n## Syntax \n")
          f.write("The following table describes the [keywords and options](parsing.md) that can be used with this action \n\n")
          f.write("| Keyword | Type | Default | Description |\n")
