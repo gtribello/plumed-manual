@@ -219,6 +219,12 @@ def createModulePage( version, modname, neggs, nlessons ) :
          f.write("});\n")
          f.write("</script>\n")
 
+def getKeywordDescription( docs ) :
+    desc = docs["description"] 
+    if "actionlink" in docs.keys() and docs["actionlink"]!="none" :
+       desc = desc + ". Options for this keyword are explained in the documentation for [" + docs["actionlink"] + "](" + docs["actionlink"] + ".md)."
+    return desc
+
 def createActionPage( version, action, value, neggs, nlessons, actdb ) :
     with open( version + "/" + action + ".md", "w") as f : 
          if "IS_SHORTCUT" in value["syntax"].keys() : f.write("# [Shortcut](shortcuts.md): " + action + "\n\n")
@@ -309,18 +315,18 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
          f.write("The following table describes the [keywords and options](parsing.md) that can be used with this action \n\n")
          f.write("| Keyword | Type | Default | Description |\n")
          f.write("|:-------|:----:|:-------:|:-----------|\n")
-         for key, docs in value["syntax"].items() : 
+         for key, docs in value["syntax"].items() :
              if key=="output" : continue 
-             if "argtype" in docs.keys() and "default" in docs.keys() : f.write("| " + key + " | input | " + docs["default"] + " | " + docs["description"] + " |\n")
-             elif docs["type"]=="atoms" or "argtype" in docs.keys() : f.write("| " + key + " | input | none | " + docs["description"] + " |\n") 
+             if "argtype" in docs.keys() and "default" in docs.keys() : f.write("| " + key + " | input | " + docs["default"] + " | " + getKeywordDescription( docs ) + " |\n")
+             elif docs["type"]=="atoms" or "argtype" in docs.keys() : f.write("| " + key + " | input | none | " +  getKeywordDescription( docs ) + " |\n") 
          for key, docs in value["syntax"].items() : 
              if key=="output" or "argtype" in docs.keys()  : continue
-             if docs["type"]=="compulsory" and "default" in docs.keys()  : f.write("| " + key + " | compulsory | "  + docs["default"] + " | " + docs["description"] + " |\n") 
-             elif docs["type"]=="compulsory" : f.write("| " + key + " | compulsory | none | " + docs["description"] + " |\n")
+             if docs["type"]=="compulsory" and "default" in docs.keys()  : f.write("| " + key + " | compulsory | "  + docs["default"] + " | " + getKeywordDescription( docs ) + " |\n") 
+             elif docs["type"]=="compulsory" : f.write("| " + key + " | compulsory | none | " + getKeywordDescription( docs ) + " |\n")
          for key, docs in value["syntax"].items() :
              if key=="output" or "argtype" in docs.keys() : continue
-             if docs["type"]=="flag" : f.write("| " + key + " | optional | false | " + docs["description"] + " |\n")
-             if docs["type"]=="optional" : f.write("| " + key + " | optional | not used | " + docs["description"] + " |\n")
+             if docs["type"]=="flag" : f.write("| " + key + " | optional | false | " + getKeywordDescription( docs ) + " |\n")
+             if docs["type"]=="optional" : f.write("| " + key + " | optional | not used | " + getKeywordDescription( docs ) + " |\n")
 
     print("- name: " + action, file=actdb)
     print("  path: " + action + ".html", file=actdb)
