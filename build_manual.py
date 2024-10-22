@@ -295,7 +295,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
             f.write("\n\n")
 
          f.write("## Further details and examples \n")
-         fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure"]
+         fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure","multicolvar"]
          if value["module"] in fixed_modules : 
              actions = set()
              processMarkdown( "automatic/" + action + ".md", (PLUMED,), (version.replace("-",""),), actions )
