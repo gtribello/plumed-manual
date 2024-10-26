@@ -65,6 +65,7 @@ jobs:
       run: |
         python --version
         python build_manual.py -v ${{matrix.replica}}
+        rm -rf ${{matrix.replica}}/regtest
 
     - name: Create tar ball
       run: |
