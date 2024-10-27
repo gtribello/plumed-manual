@@ -334,7 +334,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
     print("  path: " + action + ".html", file=actdb)
     print("  description: " + value["description"], file=actdb)    
     print("  module: " + value["module"], file=actdb)
-    print("  ninp: " + str(ninputs), file=actdb)
+    print("  ninp: " + str(ninp), file=actdb)
     print("  nfail: " + str(nfail), file=actdb)
 
 if __name__ == "__main__" : 
