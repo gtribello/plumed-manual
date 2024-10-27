@@ -92,6 +92,23 @@
             long_div.style.display = "block";
         }
       }
+      function openModal(name) {
+        var modal = document.getElementById(name);
+        modal.style.display = "block"; 
+      }
+      function closeModal(name) {
+        var modal = document.getElementById(name);
+        modal.style.display = "none";
+      }
+      window.onclick = function(event) {
+        var elements = document.getElementsByClassName("modal");
+        var i;
+        for(i = 0; i<elements.length; ++i) {
+            if (event.target == elements[i]) {
+              elements[i].style.display = "none";
+            }
+        }
+      }
     </script>
   </body>
   <script>
