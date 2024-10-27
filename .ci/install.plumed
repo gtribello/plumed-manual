@@ -85,6 +85,7 @@ awk -v odir=$GITHUB_WORKSPACE/automatic '{
      inside=1 
   }
 }'
+cp -pr regtest $GITHUB_WORKSPACE/automatic
 
 hash=$(git rev-parse HEAD)
 
