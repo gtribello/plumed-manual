@@ -349,7 +349,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
     print("  module: " + value["module"], file=actdb)
     print("  ninp: " + str(ninp), file=actdb)
     print("  nfail: " + str(nfail), file=actdb)
-    print("  nukey: " + str(undoc), fail=actdb)
+    print("  nukey: " + str(undoc), file=actdb)
 
 if __name__ == "__main__" : 
    version, argv = "master", sys.argv[1:]
