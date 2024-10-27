@@ -317,18 +317,31 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
          f.write("The following table describes the [keywords and options](parsing.md) that can be used with this action \n\n")
          f.write("| Keyword | Type | Default | Description |\n")
          f.write("|:-------|:----:|:-------:|:-----------|\n")
+         undoc = 0
          for key, docs in value["syntax"].items() :
              if key=="output" : continue 
-             if "argtype" in docs.keys() and "default" in docs.keys() : f.write("| " + key + " | input | " + docs["default"] + " | " + getKeywordDescription( docs ) + " |\n")
-             elif docs["type"]=="atoms" or "argtype" in docs.keys() : f.write("| " + key + " | input | none | " +  getKeywordDescription( docs ) + " |\n") 
+             if "argtype" in docs.keys() and "default" in docs.keys() : 
+                if len(docs["description"])==0 : undoc = undoc + 1
+                f.write("| " + key + " | input | " + docs["default"] + " | " + getKeywordDescription( docs ) + " |\n")
+             elif docs["type"]=="atoms" or "argtype" in docs.keys() :
+                if len(docs["description"])==0 : undoc = undoc + 1 
+                f.write("| " + key + " | input | none | " +  getKeywordDescription( docs ) + " |\n") 
          for key, docs in value["syntax"].items() : 
              if key=="output" or "argtype" in docs.keys()  : continue
-             if docs["type"]=="compulsory" and "default" in docs.keys()  : f.write("| " + key + " | compulsory | "  + docs["default"] + " | " + getKeywordDescription( docs ) + " |\n") 
-             elif docs["type"]=="compulsory" : f.write("| " + key + " | compulsory | none | " + getKeywordDescription( docs ) + " |\n")
+             if docs["type"]=="compulsory" and "default" in docs.keys()  : 
+                if len(docs["description"])==0 : undoc = undoc + 1
+                f.write("| " + key + " | compulsory | "  + docs["default"] + " | " + getKeywordDescription( docs ) + " |\n") 
+             elif docs["type"]=="compulsory" : 
+                if len(docs["description"])==0 : undoc = undoc + 1
+                f.write("| " + key + " | compulsory | none | " + getKeywordDescription( docs ) + " |\n")
          for key, docs in value["syntax"].items() :
              if key=="output" or "argtype" in docs.keys() : continue
-             if docs["type"]=="flag" : f.write("| " + key + " | optional | false | " + getKeywordDescription( docs ) + " |\n")
-             if docs["type"]=="optional" : f.write("| " + key + " | optional | not used | " + getKeywordDescription( docs ) + " |\n")
+             if docs["type"]=="flag" : 
+                if len(docs["description"])==0 : undoc = undoc + 1
+                f.write("| " + key + " | optional | false | " + getKeywordDescription( docs ) + " |\n")
+             if docs["type"]=="optional" :
+                if len(docs["description"])==0 : undoc = undoc + 1 
+                f.write("| " + key + " | optional | not used | " + getKeywordDescription( docs ) + " |\n")
 
     print("- name: " + action, file=actdb)
     print("  path: " + action + ".html", file=actdb)
@@ -336,6 +349,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
     print("  module: " + value["module"], file=actdb)
     print("  ninp: " + str(ninp), file=actdb)
     print("  nfail: " + str(nfail), file=actdb)
+    print("  nukey: " + str(undoc), fail=actdb)
 
 if __name__ == "__main__" : 
    version, argv = "master", sys.argv[1:]
