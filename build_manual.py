@@ -294,11 +294,13 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
                 elif "argtype" in docs.keys() : f.write("| " + key + " | " + docs["argtype"] + " | " + docs["description"] + " |\n")
             f.write("\n\n")
 
+         ninp, nfail = 0, 0
          f.write("## Further details and examples \n")
          fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure", "multicolvar", "valtools"]
          if value["module"] in fixed_modules : 
              actions = set()
-             processMarkdown( "automatic/" + action + ".md", (PLUMED,), (version.replace("-",""),), actions )
+             ninp, nf = processMarkdown( "automatic/" + action + ".md", (PLUMED,), (version.replace("-",""),), actions )
+             nfail = nf[0]
              with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
              f.write( inp.replace(value["description"],"") )
              # This moves all the PLUMED output files 
@@ -332,6 +334,8 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
     print("  path: " + action + ".html", file=actdb)
     print("  description: " + value["description"], file=actdb)    
     print("  module: " + value["module"], file=actdb)
+    print("  ninp: " + str(ninputs), file=actdb)
+    print("  nfail: " + str(nfail), file=actdb)
 
 if __name__ == "__main__" : 
    version, argv = "master", sys.argv[1:]
