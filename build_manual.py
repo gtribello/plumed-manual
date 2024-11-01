@@ -405,6 +405,7 @@ if __name__ == "__main__" :
            neggs, nlessons = 0, 0
            if key in nest_map.keys() : neggs = nest_map[key]
            if key in school_map.keys() : nlessons = school_map[key] 
+           print("Building action page", key )
            createActionPage( version, key, value, neggs, nlessons, actdb ) 
 
    # Create a list of modules
