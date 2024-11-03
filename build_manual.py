@@ -298,11 +298,13 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
          f.write("## Further details and examples \n")
          fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure", "multicolvar", "valtools", "matrixtools", "colvar", "pamm"]
          if value["module"] in fixed_modules : 
+             with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
+             with open("automatic/" + action + ".md", "w+") as off : off.write( inp.replace(value["description"],"") )
              actions = set()
              ninp, nf = processMarkdown( "automatic/" + action + ".md", (PLUMED,), (version.replace("-",""),), actions )
              nfail = nf[0]
              with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
-             f.write( inp.replace(value["description"],"") )
+             f.write( inp )
              # This moves all the PLUMED output files 
              for file in glob.glob("automatic/" + action + ".md_*" ) : os.rename(file, file.replace("automatic", version) )
          else : 
