@@ -70,6 +70,8 @@ for mod in `ls src/*/Makefile` ;  do
 done
 echo } >> $GITHUB_WORKSPACE/_data/extradeps$version.json
 cp -pr new-manual $GITHUB_WORKSPACE/$version
+# Copy files that are required to make examples in include work
+cp new-manual/* $GITHUB_WORKSPACE/automatic
 cp -pr regtest $GITHUB_WORKSPACE
 mkdir $GITHUB_WORKSPACE/automatic
 
