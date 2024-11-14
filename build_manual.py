@@ -148,9 +148,16 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
        # a subgraph.  The resulting flow chart is less clustered with arrows       
        if len(group)>2 : 
           of.write("subgraph g" + str(i) + " [ ]\n")
+          ncols, lgroup, row, col = 5, [], 0, 0 
           for j in group :  
+              lgroup.append(j)
               if drawn[j]==0 :
                  drawModuleNode( j, backtranslate[j], dependinfo[backtranslate[j]]["type"], of )
+                 if row>0 :
+                    ind = lgroup[(row-1)*ncols + col]
+                    of.write( str(ind) + "~~~" + str(j) + ";\n")
+                 col = col + 1
+                 if col%ncols==0 : col, row = 0, row + 1 
                  drawn[j]==1
           of.write("end\n")
           for l in range(k) :
@@ -296,7 +303,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
 
          ninp, nfail = 0, 0
          f.write("## Further details and examples \n")
-         fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure", "multicolvar", "valtools", "matrixtools", "colvar", "pamm", "volumes", "generic", "wham"]
+         fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure", "multicolvar", "valtools", "matrixtools", "colvar", "pamm", "volumes", "generic"]
          if value["module"] in fixed_modules : 
              with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
              with open("automatic/" + action + ".md", "w+") as off : off.write( inp.replace(value["description"],"") )
