@@ -149,7 +149,7 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
        # a subgraph.  The resulting flow chart is less clustered with arrows       
        if len(group)>2 : 
           of.write("subgraph g" + str(i) + " [ ]\n")
-          ncols, lgroup, row, col = 5, [], 0, 0 
+          ncols, lgroup, row, col = 3, [], 0, 0 
           for j in group :  
               lgroup.append(j)
               if drawn[j]==0 :
