@@ -159,7 +159,7 @@ If you are completely unfamiliar with PLUMED we would recommend that you start b
                  drawModuleNode( j, backtranslate[j], dependinfo[backtranslate[j]]["type"], of )
                  if row>0 :
                     ind = lgroup[(row-1)*ncols + col]
-                    #of.write( str(ind) + "~~~" + str(j) + ";\n")
+                    of.write( str(ind) + "~~~" + str(j) + ";\n")
                  col = col + 1
                  if col%ncols==0 : col, row = 0, row + 1 
                  drawn[j]==1
