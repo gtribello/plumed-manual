@@ -254,6 +254,8 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
          if "output" in value["syntax"] and "value" in value["syntax"]["output"] : 
             f.write("|\n | **output value** | **type** |\n")
             f.write("| " + value["syntax"]["output"]["value"]["description"] + " | " + value["syntax"]["output"]["value"]["type"] + " |\n\n" )
+         elif "output" not in value["syntax"] and (hasatoms or hasargs) :
+            f.write("|\n **This action outputs data to a file**. You can read more about how PLUMED manages output files [here](Files.md) | |\n\n" ) 
          else : 
             f.write(" | \n\n")
 
