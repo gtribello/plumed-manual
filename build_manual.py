@@ -235,6 +235,12 @@ def getKeywordDescription( docs ) :
 
 def createActionPage( version, action, value, neggs, nlessons, actdb ) :
     with open( version + "/" + action + ".md", "w") as f : 
+         hasatoms, hasargs = False, False
+         for key, docs in value["syntax"].items() :
+             if key=="output" : continue
+             if docs["type"]=="atoms" : hasatoms=True
+             elif "argtype" in docs.keys() : hasargs=True
+
          if "IS_SHORTCUT" in value["syntax"].keys() : f.write("# [Shortcut](shortcuts.md): " + action + "\n\n")
          else : f.write("# [Action](actions.md): " + action + "\n\n")
 
@@ -283,12 +289,6 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
                       if key=="value" : continue 
                       f.write("| " + key + " | " + docs["type"] + " | " + docs["flag"] + " | " + docs["description"] + " | \n")
                   f.write("\n\n")
-         
-         hasatoms, hasargs = False, False
-         for key, docs in value["syntax"].items() :
-             if key=="output" : continue
-             if docs["type"]=="atoms" : hasatoms=True 
-             elif "argtype" in docs.keys() : hasargs=True 
          
          if hasatoms or hasargs : 
             f.write("## Input\n\n")
