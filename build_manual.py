@@ -306,7 +306,7 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
 
          ninp, nfail = 0, 0
          f.write("## Further details and examples \n")
-         fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure", "multicolvar", "valtools", "matrixtools", "colvar", "pamm", "volumes", "generic", "function", "wham", "core", "refdist", "fourier", "setup", "vatom", "symfunc"]
+         fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure", "multicolvar", "valtools", "matrixtools", "colvar", "pamm", "volumes", "generic", "function", "wham", "core", "refdist", "fourier", "setup", "vatom", "symfunc", "landmarks"]
          if value["module"] in fixed_modules : 
              with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
              with open("automatic/" + action + ".md", "w+") as off : off.write( inp.replace(value["description"],"") )
