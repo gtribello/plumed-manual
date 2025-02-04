@@ -1,3 +1,4 @@
 theme: jekyll-theme-cayman
 title: PLUMED-MANUAL
 description: The manual for the open source plugin for molecular dynamics PLUMED
+markdown: GFM
