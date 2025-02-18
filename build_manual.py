@@ -16,7 +16,7 @@ PLUMED="plumed"
 
 def addPlumedJavasript() :
     with open("_layouts/default.html") as f : content = f.readlines()
-    with open("_layouts/default.html", "w+" as of : 
+    with open("_layouts/default.html", "w+") as of : 
         for line in content : 
             if line=="</body>" : of.write( get_javascript() ) 
             of.write( line + "\n")
