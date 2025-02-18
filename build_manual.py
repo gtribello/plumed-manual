@@ -21,9 +21,6 @@ def addPlumedJavasript() :
             if line=="</body>" : of.write( get_javascript() ) 
             of.write( line + "\n")
 
-def addPlumedCSS() :
-    with open("assets/css/style.scss","a") as of : of.write( 
-
 def get_reference(doi):
     # initialize strings
     ref=""; ref_url=""
