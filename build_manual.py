@@ -9,7 +9,7 @@ import numpy as np
 from pathlib import Path
 from datetime import date 
 from bs4 import BeautifulSoup
-from PlumedToHTML import processMarkdown 
+from PlumedToHTML import processMarkdown, get_javascript, get_css 
 import networkx as nx
 
 PLUMED="plumed"
@@ -379,6 +379,10 @@ if __name__ == "__main__" :
 
    nest_map = create_map("https://www.plumed-nest.org/summary.html")
    school_map = create_map("https://www.plumed-tutorials.org/summary.html")
+   # Print the javascript for plumed to html to a file
+   with open("assets/plumed.js", "w+") as jf : jf.write( get_javascript() )
+   # Print the css for plumed to html to a file
+   with open("assets/plumed.css", "w+" as cf : cf.write( get_css() )
    # Print the date to the data directory
    today = { "date": date.today().strftime('%B %d, %Y') }
    df = open("_data/date.json","w")
