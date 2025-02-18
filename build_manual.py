@@ -14,6 +14,16 @@ import networkx as nx
 
 PLUMED="plumed"
 
+def addPlumedJavasript() :
+    with open("_layouts/default.html") as f : content = f.readlines()
+    with open("_layouts/default.html", "w+" as of : 
+        for line in content : 
+            if line=="</body>" : of.write( get_javascript() ) 
+            of.write( line + "\n")
+
+def addPlumedCSS() :
+    with open("assets/css/style.scss","a") as of : of.write( 
+
 def get_reference(doi):
     # initialize strings
     ref=""; ref_url=""
@@ -380,9 +390,9 @@ if __name__ == "__main__" :
    nest_map = create_map("https://www.plumed-nest.org/summary.html")
    school_map = create_map("https://www.plumed-tutorials.org/summary.html")
    # Print the javascript for plumed to html to a file
-   with open("assets/plumed.js", "w+") as jf : jf.write( get_javascript() )
+   addPlumedJavasript()
    # Print the css for plumed to html to a file
-   with open("assets/plumed.css", "w+") as cf : cf.write( get_css() )
+   with open("assets/css/style.scss", "a") as cf : cf.write( get_css() )
    # Print the date to the data directory
    today = { "date": date.today().strftime('%B %d, %Y') }
    df = open("_data/date.json","w")
