@@ -14,13 +14,6 @@ import networkx as nx
 
 PLUMED="plumed"
 
-def addPlumedJavasript() :
-    with open("_layouts/default.html") as f : content = f.readlines()
-    with open("_layouts/default.html", "w+") as of : 
-        for line in content : 
-            if line=="</body>" : of.write( get_javascript() ) 
-            of.write( line + "\n")
-
 def get_reference(doi):
     # initialize strings
     ref=""; ref_url=""
@@ -313,7 +306,8 @@ def createActionPage( version, action, value, neggs, nlessons, actdb ) :
 
          ninp, nfail = 0, 0
          f.write("## Further details and examples \n")
-         fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure", "multicolvar", "valtools", "matrixtools", "colvar", "pamm", "volumes", "generic", "function", "wham", "core", "refdist", "fourier", "setup", "vatom", "symfunc", "landmarks"]
+         fixed_modules = []
+         #fixed_modules = ["adjmat", "envsim", "sprint", "clusters", "secondarystructure", "multicolvar", "valtools", "matrixtools", "colvar", "pamm", "volumes", "generic", "function", "wham", "core", "refdist", "fourier", "setup", "vatom", "symfunc", "landmarks"]
          if value["module"] in fixed_modules : 
              with open("automatic/" + action + ".md", "r") as iff : inp = iff.read()
              with open("automatic/" + action + ".md", "w+") as off : off.write( inp.replace(value["description"],"") )
@@ -387,9 +381,9 @@ if __name__ == "__main__" :
    nest_map = create_map("https://www.plumed-nest.org/summary.html")
    school_map = create_map("https://www.plumed-tutorials.org/summary.html")
    # Print the javascript for plumed to html to a file
-   addPlumedJavasript()
+   with open( version + "/plumedtohtml.js", "w+") as jf : jf.write( get_javascript() )
    # Print the css for plumed to html to a file
-   with open("assets/css/style.scss", "a") as cf : cf.write( get_css() )
+   with open( version "/plumedtohtml.css", "w+") as cf : cf.write( get_css() )
    # Print the date to the data directory
    today = { "date": date.today().strftime('%B %d, %Y') }
    df = open("_data/date.json","w")

@@ -89,6 +89,8 @@ jobs:
       - name: Extract artifact
         run: |
           tar xf manual_*/manual_*.tar
+          cp new-manual/plumedtohtml.js assets
+          cp new-manual/plumedtohtml.css assets/css
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
