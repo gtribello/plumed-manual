@@ -383,7 +383,7 @@ if __name__ == "__main__" :
    # Print the javascript for plumed to html to a file
    with open( version + "/plumedtohtml.js", "w+") as jf : jf.write( get_javascript() )
    # Print the css for plumed to html to a file
-   with open( version "/plumedtohtml.css", "w+") as cf : cf.write( get_css() )
+   with open( version + "/plumedtohtml.css", "w+") as cf : cf.write( get_css() )
    # Print the date to the data directory
    today = { "date": date.today().strftime('%B %d, %Y') }
    df = open("_data/date.json","w")
